@@ -15,6 +15,7 @@
     <groupId>com.loginservice</groupId>
     <artifactId>login-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>Login Service</name>
     <description>Login service for contact</description>
 
