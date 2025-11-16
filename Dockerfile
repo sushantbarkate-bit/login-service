@@ -20,6 +20,6 @@ WORKDIR /app
 # Copy the jar built from stage 1
 COPY --from=build /app/target/login-service-0.0.1-SNAPSHOT.jar login-service.jar
 
-EXPOSE 8082
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "login-service.jar"]
