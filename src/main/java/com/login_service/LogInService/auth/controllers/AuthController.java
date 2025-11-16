@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -45,11 +46,11 @@ public class AuthController {
         String firstName = body.get("firstName");
         String lastName = body.get("lastName");
         String email = body.get("email");
-        if (userRepository.findByUsername(username).isPresent()) {
-            return ResponseEntity.badRequest().body("Username already exists");
-        }
+//        if (userRepository.findByUsername(username).isPresent()) {
+//            return ResponseEntity.badRequest().body("Username already exists");
+//        }
         User user = User.builder()
-               // .id(UUID.randomUUID())
+                // .id(UUID.randomUUID().toString())
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .lastName(lastName)
@@ -76,7 +77,7 @@ public class AuthController {
                     refreshTokenService.verifyExpiration(token);
                     User user = token.getUser();
                     String accessToken = jwtUtil.generateToken(user.getUsername(), Map.of());
-                    return ResponseEntity.ok(new AuthResponse(accessToken, token.getToken()));
+                    return ResponseEntity.ok(new AuthResponse(accessToken, token.getToken(), user.getId()));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -90,6 +91,16 @@ public class AuthController {
             return ResponseEntity.ok("Deleted refresh tokens: " + deleted);
         } else {
             return ResponseEntity.badRequest().body("User not found");
+        }
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> logout(@PathVariable UUID id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(user.get());
         }
     }
 }

@@ -48,6 +48,6 @@ public class AuthService {
         var refreshToken = refreshTokenService.createRefreshToken(user);
 
         // Return auth response
-        return new AuthResponse(accessToken, refreshToken.getToken());
+        return new AuthResponse(accessToken, refreshToken.getToken(), user.getId());
     }
 }

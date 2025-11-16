@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         // 👇 Allow registration and login without JWT
-                        .requestMatchers("/auth/register", "/auth/login").permitAll()
+                        .requestMatchers("/auth/register", "/auth/login", "/auth/refresh").permitAll()
                         // 👇 Everything else needs authentication
                         .anyRequest().authenticated()
                 );
